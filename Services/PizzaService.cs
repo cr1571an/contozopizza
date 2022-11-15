@@ -4,6 +4,7 @@ namespace ContosoPizza.Services;
 
 public static class PizzaService
 {
+    /*
     static List <Pizza> Pizzas { get;}
     static int nextId = 3;
     static PizzaService()
@@ -39,4 +40,6 @@ public static class PizzaService
             return;
         Pizzas[index] = pizza;
     }
+
+    */
 }

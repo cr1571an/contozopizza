@@ -5,6 +5,7 @@ using ContosoPizza.Models;
 
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("Pizzas") ?? "Data Source=Pizzas.db";
 
 
 // Add services to the container.
@@ -12,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddDbContext<PizzaDb>(options => options.UseInMemoryDatabase("items"));
+builder.Services.AddSqlite<PizzaDb>(connectionString);
 builder.Services.AddSwaggerGen(c =>
 {
      c.SwaggerDoc("v1", new OpenApiInfo {
@@ -39,4 +40,11 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.MapGet("/pizzas", async (PizzaDb db) => await db.Pizzas.ToListAsync());
+app.MapPost("/pizza", async (PizzaDb db, Pizza pizza) =>
+{
+    await db.Pizzas.AddAsync(pizza);
+    await db.SaveChangesAsync();
+    return Results.Created($"/pizza/{pizza.Id}", pizza);
+});
+app.MapGet("/pizza/{id}", async (PizzaDb db, int id) => await db.Pizzas.FindAsync(id));
 app.Run();

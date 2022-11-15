@@ -8,6 +8,7 @@ namespace ContosoPizza.Controllers;
 [Route("[controller]")]
 public class PizzaController : ControllerBase
 {
+    /*
     public PizzaController()
     {
     }
@@ -69,5 +70,6 @@ public class PizzaController : ControllerBase
    
     return NoContent();
     } 
+    */
 
 }
